@@ -1,5 +1,6 @@
 #include <raylib.h>
 #include "../include/game.h"
+#include "../include/colors.h"
 
 double lastUpdateTime = 0;
 
@@ -13,10 +14,9 @@ bool EventTrigered(double interval){
 }
 int main() 
 {
-    constexpr Color darkBlue = {0, 0, 139, 255};
-    constexpr int screenWidth = 300;
-    constexpr int screenHeight = 600;
-    
+    constexpr int screenWidth = 500;
+    constexpr int screenHeight = 620;
+
     InitWindow(screenWidth, screenHeight, "Tetris");
     SetTargetFPS(60);
 
@@ -31,6 +31,7 @@ int main()
         }
         BeginDrawing();
         ClearBackground(darkBlue);
+        
         game.Draw();
         EndDrawing();
     }
