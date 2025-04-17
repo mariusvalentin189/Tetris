@@ -24,6 +24,7 @@ private:
 public:
     bool gameOver;
     int score;
+    float gameSpeed;
 
     Game();
     void Draw();

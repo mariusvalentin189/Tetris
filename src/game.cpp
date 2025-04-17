@@ -10,6 +10,7 @@ Game::Game(){
     gameOver=false;
     score=0;
     font = LoadFontEx("Font/monogram.ttf",64,0,0);
+    gameSpeed=0.4;
 }
 
 Block Game::GetRandomBlock(){
@@ -79,16 +80,18 @@ void Game::HandleInput(){
         case KEY_D:
             MoveBlockRight();
             break;
-            
-        case KEY_DOWN:
-        case KEY_S:
-            MoveBlockDown();
-            break;
     
         case KEY_UP:
         case KEY_W:
             RotateBlock();
             break;
+    }
+
+    if(IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)){
+        gameSpeed=0.05;
+    }
+    else{
+        gameSpeed=0.4;
     }
 }
 
