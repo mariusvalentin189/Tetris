@@ -90,3 +90,7 @@ int Grid::ClearFullRows(){
 
     return completed;
 }
+
+void Grid::UpdateColors(){
+    colors = GetCellColors();
+}

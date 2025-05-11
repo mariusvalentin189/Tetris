@@ -22,6 +22,7 @@ public:
     bool IsCellEmpty(int row, int column);
     int ClearFullRows();
     int grid[20][10];
+    void UpdateColors();
 
     void Draw();
 };

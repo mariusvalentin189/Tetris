@@ -42,3 +42,7 @@ void Block::UndoRotation(){
         rotationState=(int)cells.size() - 1;
     }
 }
+
+void Block::UpdateColors(){
+    colors = GetCellColors();
+}

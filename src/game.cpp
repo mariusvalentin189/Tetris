@@ -11,6 +11,9 @@ Game::Game(){
     score=0;
     font = LoadFontEx("Font/monogram.ttf",64,0,0);
     gameSpeed=0.4;
+    defaultGameSpeed=0.4;
+    level=1;
+    linesToClearLevel=0;
 }
 
 Block Game::GetRandomBlock(){
@@ -33,7 +36,7 @@ void Game::Draw(){
     DrawTextEx(font, "Next", {370, 175}, 38, 2, WHITE);
 
     if(gameOver){
-        DrawTextEx(font, "GAME OVER", {320, 450}, 38, 2, WHITE);
+        DrawTextEx(font, "GAME OVER", {320, 500}, 38, 2, WHITE);
     } 
     DrawRectangleRounded({320, 55, 170, 60}, 0.3, 6, lightBlue);
 
@@ -43,6 +46,13 @@ void Game::Draw(){
 
     DrawTextEx(font, scoreText, {320 + (170 - textSize.x)/2, 65}, 38, 2, WHITE);
     DrawRectangleRounded({320, 215, 170, 180}, 0.3, 6, lightBlue);
+
+    DrawRectangleRounded({320, 440, 170, 40}, 0.3, 6, lightBlue);
+    DrawTextEx(font, "Level", {363, 400}, 38, 2, WHITE);
+    char levelText[3];
+    sprintf(levelText, "%d", level);
+    Vector2 levelTextSize = MeasureTextEx(font, levelText, 38, 2);
+    DrawTextEx(font, levelText, {320 + (170 - levelTextSize.x)/2, 440}, 38, 2, WHITE);
     
     grid.Draw();
     currentBlock.Draw(11,11);
@@ -88,10 +98,10 @@ void Game::HandleInput(){
     }
 
     if(IsKeyDown(KEY_DOWN) || IsKeyDown(KEY_S)){
-        gameSpeed=0.05;
+        gameSpeed=defaultGameSpeed/4;
     }
     else{
-        gameSpeed=0.4;
+        gameSpeed=defaultGameSpeed;
     }
 }
 
@@ -175,21 +185,34 @@ void Game::Reset(){
     currentBlock = GetRandomBlock();
     nextBlock = GetRandomBlock();
     score=0;
+    gameSpeed=0.4;
+    defaultGameSpeed=0.4;
+    level=1;
+    linesToClearLevel=0;
+
 }
 
 void Game::UpdateScore(int linesCleared, int moveDownPoints){
     switch (linesCleared)
     {
     case 1:
-        score+=100;
+        linesToClearLevel+=1;
+        score+=linesToClearLevel*level*100;
         break;
 
     case 2:
-        score+=300;
+        linesToClearLevel+=3;
+        score+=linesToClearLevel*level*100;
         break;
 
     case 3:
-        score+=500;
+        linesToClearLevel+=5;
+        score+=linesToClearLevel*level*100;
+        break;
+
+    case 4:
+        linesToClearLevel+=8;
+        score+=linesToClearLevel*level*100;
         break;
 
     default:
@@ -197,4 +220,14 @@ void Game::UpdateScore(int linesCleared, int moveDownPoints){
     }
 
     score+=moveDownPoints;
+
+    if(linesToClearLevel >= 10){
+        linesToClearLevel -= 10;
+        level+=1;
+        ChangeColors(1);
+        grid.UpdateColors();
+        currentBlock.UpdateColors();
+        nextBlock.UpdateColors();
+        defaultGameSpeed=defaultGameSpeed/1.1;
+    }
 }

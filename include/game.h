@@ -24,7 +24,10 @@ private:
 public:
     bool gameOver;
     int score;
+    int level;
+    int linesToClearLevel;
     float gameSpeed;
+    float defaultGameSpeed;
 
     Game();
     void Draw();
